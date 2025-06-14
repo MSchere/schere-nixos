@@ -411,7 +411,7 @@
         "sudo"
         "history"
         "python"
-        "npm" 
+        "npm"
         "tmux"
         "golang"
       ];
@@ -516,7 +516,7 @@
     enable = true;
     extensions = [
       "html"
-      "catpuccin"
+      "catppuccin"
       "dockerfile"
       "git-firefly"
       "sql"
@@ -524,6 +524,7 @@
       "terraform"
       "log"
       "solidity"
+      "nix"
     ];
     userSettings = {
       show_edit_predictions = true;
@@ -635,4 +636,4 @@
       }
     ];
   };
-} 
+}

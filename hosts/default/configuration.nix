@@ -67,12 +67,11 @@
     extraSpecialArgs = { inherit inputs; };
     users = {
       "schere" = import ./home.nix;
-    }; 
+    };
   };
 
   nixpkgs.config.allowUnfree = true;
 
-  programs.zsh.enable = true;
 
   environment.systemPackages = with pkgs; [
   vim
@@ -93,6 +92,8 @@
   environment.sessionVariables = {
     GSK_RENDERER = "gl";
   };
+
+  programs.zsh.enable = true;
 
   services.openssh.enable = true;
   services.pcscd.enable = true;
@@ -121,7 +122,7 @@
     flags = [
       "--update-input"
       "nixpkgs"
-      "-L" # print build logs
+      "-L"
     ];
     dates = "02:00";
     randomizedDelaySec = "45min";
