@@ -560,7 +560,7 @@
       ui_font_size = 16;
       buffer_font_size = 15.0;
       relative_line_numbers = true;
-      format_on_save = "off";
+      format_on_save = "on";
       project_panel = {
         auto_fold_dirs = false;
       };
