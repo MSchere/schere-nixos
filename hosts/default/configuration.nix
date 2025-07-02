@@ -72,10 +72,7 @@
 
   nixpkgs.config.allowUnfree = true;
 
-<<<<<<< Updated upstream
-=======
   nix.settings.download-buffer-size = 524288000;
->>>>>>> Stashed changes
 
   environment.systemPackages = with pkgs; [
   vim
