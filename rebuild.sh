@@ -29,10 +29,35 @@ if [[ $REPLY =~ ^[Nn]$ ]]; then
     exit 0
 fi
 
-echo "NixOS Rebuilding..."
+# Prompt for sudo password first to avoid conflicts with spinner
+echo "Authenticating..."
+sudo -v
 
-# Rebuild with better error handling
-if ! sudo nixos-rebuild switch --flake "$FLAKE_CONFIG" &>"$LOG_FILE"; then
+# Function to show loading spinner
+show_loading() {
+    local pid=$1
+    local delay=0.1
+    local spinstr='|/-\'
+    printf "NixOS Rebuilding "
+    while kill -0 "$pid" 2>/dev/null; do
+        local temp=${spinstr#?}
+        printf "[%c]" "$spinstr"
+        spinstr=$temp${spinstr%"$temp"}
+        sleep $delay
+        printf "\b\b\b"
+    done
+    printf "   \b\b\b"
+}
+
+# Start rebuild in background and show loading animation
+sudo nixos-rebuild switch --flake "$FLAKE_CONFIG" &>"$LOG_FILE" &
+rebuild_pid=$!
+
+# Show loading animation while rebuild is running
+show_loading $rebuild_pid
+
+# Wait for the rebuild to complete and check exit status
+if ! wait $rebuild_pid; then
     echo "❌ Build failed! Error log:"
     grep -i error "$LOG_FILE" || echo "No specific errors found. Full log:"
     tail -20 "$LOG_FILE"
@@ -50,7 +75,7 @@ gen_info=$(nixos-rebuild list-generations | grep True | awk '{print $1 " " $3}')
 
 # Commit all changes with more detailed metadata
 git add .
-git commit -m "nixos: generation $current
+git commit -m "Generation $current
 
 Built on: $(date)
 Kernel: $(nixos-rebuild list-generations | grep True | awk '{print $5}')

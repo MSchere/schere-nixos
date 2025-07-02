@@ -373,6 +373,7 @@
       d = "diff";
       s = "status -sb";
       l = "log --oneline --graph";
+      r = "reset";
       dv = "difftool -t vimdiff -y";
       br = "branch";
       sw = "switch";
